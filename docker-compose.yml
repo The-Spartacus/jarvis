@@ -1,0 +1,45 @@
+services:
+  jarvis-terminal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jarvis-terminal-app
+    stdin_open: true
+    tty: true
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - API_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent
+      - MODEL=gemini-1.5-pro
+      - API_TEMPERATURE=0.2
+      - MAX_TOKENS=1000
+      - DOCKER_IMAGE=ubuntu:22.04
+      - MAX_COMMAND_LENGTH=500
+      - MAX_OUTPUT_LENGTH=5000
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - ./plugins:/app/plugins
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9999:9999"
+    networks:
+      - jarvis-net
+
+  # Optional: Docker-in-Docker for sandbox execution
+  docker-dind:
+    image: docker:24.0-dind
+    container_name: jarvis-docker-dind
+    privileged: true
+    volumes:
+      - /var/lib/docker
+    networks:
+      - jarvis-net
+
+networks:
+  jarvis-net:
+    driver: bridge
+
+volumes:
+  config:
+  logs:
+  plugins:
