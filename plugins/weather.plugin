@@ -1,0 +1,8 @@
+# Weather Plugin Example
+# Get weather information
+
+name=weather
+command=curl -s wttr.in/${location:-NewYork}
+description=Get weather forecast for a location
+category=utility
+requires_confirmation=false

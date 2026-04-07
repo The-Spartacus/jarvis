@@ -1,0 +1,8 @@
+# Disk Usage Plugin Example
+# Show disk space information
+
+name=disk-usage
+command=df -h | sort -k5 -rn
+description=Show disk usage sorted by usage percentage
+category=system
+requires_confirmation=false
